@@ -479,7 +479,7 @@ nltk.data.path.append("./nltk_data")
 @st.cache_resource
 def download_nltk_data():
     try:
-        nltk.download('punkt', download_dir="./nltk_data")
+        nltk.download('punkt_tab', download_dir="./nltk_data")
         nltk.download('stopwords', download_dir="./nltk_data")
         return True
     except Exception as e:
