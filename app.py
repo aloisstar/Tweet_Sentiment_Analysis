@@ -467,15 +467,43 @@ st.set_page_config(
     page_icon="📊",
     layout="wide"
 )
+ # Create directory for NLTK data
+if not os.path.exists("nltk_data"):
+    os.makedirs("nltk_data")
+
+# Set NLTK data path
+nltk.data.path.append("./nltk_data")
 
 # Download NLTK data
 @st.cache_resource
 def download_nltk_data():
-    nltk.download('punkt')
-    nltk.download('stopwords')
+    try:
+        nltk.download('punkt', download_dir="./nltk_data")
+        nltk.download('stopwords', download_dir="./nltk_data")
+        return True
+    except Exception as e:
+        st.error(f"Error downloading NLTK data: {str(e)}")
+        return False
 
-download_nltk_data()
-stop_words = set(stopwords.words('english'))
+# Initialize NLTK downloads
+if download_nltk_data():
+    stop_words = set(stopwords.words('english'))
+else:
+    st.error("Failed to download required NLTK data")
+    stop_words = set()
+
+# # Custom CSS
+st.markdown("""
+     <style>
+     .main {
+        padding: 2rem;
+    }
+    .stAlert {
+        margin-top: 1rem;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 
 # Load default data
 @st.cache_data
